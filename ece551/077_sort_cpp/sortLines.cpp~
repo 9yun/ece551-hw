@@ -1,0 +1,37 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<fstream>
+
+int main(int argc, char** argv){
+  if(argc == 1){
+    std::vector<std::string> cinArray;
+    std::string cin_str;
+    while(!cin.eof()){
+      std::cin >> cin_str;
+      cinArray.push_back(cin_str);
+    }
+    std::sort(cinArray.begin(),cinArray.end());
+    for(std::vector<std::string>::iterator it=cinArray.begin();it!=cinArray.end();++it){
+      std::cout << *it << "\n";
+    }
+  }
+  for(int i=1;i<argc;i++){
+  std::ifstream readFile;
+  readFile.open(argv[i]);
+  std::vector<std::string> strArray;
+  if(readFile.is_open()){
+    while(!readFile.eof()){
+      char line[1000];
+      readFile.getline(line,1000);
+      strArray.push_back(line);
+      }
+  }
+  std::sort(strArray.begin(),strArray.end());
+  for(std::vector<std::string>::iterator it =strArray.begin();it!=strArray.end();++it){
+    std::cout<<*it<<"\n";
+  }
+  readFile.close();
+  }
+  return 0;
+}

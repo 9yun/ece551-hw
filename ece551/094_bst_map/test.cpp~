@@ -1,0 +1,34 @@
+#include<stdexcept>
+#include<iostream>
+#include"bstmap.h"
+#include<cstdio>
+#include<cstdlib>
+
+
+int main(){
+  BstMap<int, int> m;
+  //std::cout << "wrong here.\n";
+  m.add(5,0);
+  //std::cout << "wrong here.\n";
+  m.add(4,0);
+  m.add(2,0);
+  m.add(3,0);
+  m.add(1,0);
+  m.remove(4);
+  try{
+    std::cout << m.lookup(4) << "\n";
+    std::cout << m.lookup(6) << "\n";
+  }
+  catch(std::invalid_argument &ie){
+    std::cout << ie.what();
+  }
+  m.print();
+  BstMap<int,int> n(m);
+  n.print();
+  BstMap<int,int> a;
+  a = m;
+  a.print();
+  n.add(6,0);
+  a = n;
+  a.print();
+}

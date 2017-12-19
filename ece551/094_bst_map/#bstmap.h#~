@@ -1,0 +1,56 @@
+template<typename K, typename V>
+class Bstmap{
+ private:
+  class Node{
+  private:
+    Node *left;
+    Node *right;
+    K key;
+    V value;
+  public:
+  Node():left(NULL),right(NULL){}
+  Node(Node &rhs):left(rhs.left),right(rhs.right),key(rhs.key),value(rhs.value){}
+  };
+  Node *root;
+ public:
+  Node *lookup_help(const K& key) const{
+    Node *curr = root;
+    while(curr != NULL){
+      if((curr)->key == key){
+	return (curr);
+      }
+      else if(key < (curr)->key){
+	curr = curr->left;
+      }
+      else{
+	curr = curr->right;
+      }
+    }
+    return NULL;
+  }
+  virtual const V & lookup(const K& key) const throw (std::invalid_argument) const {
+    Node *ans = lookup_help(key);
+    if(ans == NULL){
+      throw std::invalid_argument("No key found.\n");
+    }
+    return ans->value;
+  }
+  virtual void add(const K & key, const V & value){
+    Node **curr = &root;
+    while(*curr !=NULL){
+      if((*curr)->key == key){
+	(*curr)->value = value;
+      }
+      else if(key < (*curr)->key){
+	curr = &(*curr)->left;
+      }
+      else{
+	curr = &(*curr)->right;
+      }
+    }
+    *curr = new Node(NULL,NULL,key,value);
+  }
+  virtual void remove(const K& key){
+    
+  }
+};

@@ -1,0 +1,22 @@
+Grading at 09/26/2017:00:38:24.041419
+For commit ID 60f2cf5debd45aa88009bda16d4dd7b34002e3a4
+Attempting to compile rotateMatrix.c
+testcase1 passed
+#################################################
+testcase2:
+testcase2 passed
+#################################################
+testcase3:
+testcase3 passed
+#################################################
+testcase4:
+testcase4 passed
+#################################################
+testcase5:
+testcase5 passed
+#################################################
+testcase6:
+Your file matched the expected output
+testcase6 passed
+
+Overall Grade: A

@@ -1,0 +1,62 @@
+#include<string.h>
+#include<iostream>
+#include<cstdlib>
+#include<ctype.h>
+#include<sstream>
+
+class Expression{
+ public:
+  //Expression(std::string give):exp(give){}
+  virtual std::string toString() const=0;
+  virtual ~Expression(){}
+};
+
+
+class NumExpression: public Expression{
+ private:
+  double num;
+ public:
+ NumExpression(long giveNum):num(giveNum){};
+  virtual std::string toString() const{
+    std::stringstream stream;
+    std::string result;
+    stream << num;
+    stream >> result;
+    return result;
+  }
+  virtual ~NumExpression(){}
+};
+/*
+class ope_exp:public:Expression{
+ protected:
+  Expression *left;
+  Expression *right;
+ public:
+ ope_exp(Expression *lhs,Expression *rhs):left(lhs),right(rhs){}
+  virtual ~ope_exp(){
+    delete left;
+    delete right;
+  }
+  virtual std::string tostring() const = 0 ;
+  //long string 
+};*/
+class PlusExpression:public Expression{
+ private:
+  Expression *left;
+  Expression *right;
+ public:
+ PlusExpression(Expression *lhs,Expression *rhs):left(lhs),right(rhs){}
+  virtual std::string toString() const{
+    std::string infix;
+    infix.push_back('(');
+    infix+=left->toString();
+    infix+=" + ";
+    infix+=right->toString();
+    infix.push_back(')');
+    return infix;
+  }
+  virtual ~PlusExpression(){
+    delete left;
+    delete right;
+  }
+};

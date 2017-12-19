@@ -1,0 +1,4 @@
+dedup:dedup.o
+	g++ -o dedup dedup.o
+dedup.o:dedup.cpp hashmap.h
+	g++ --std=gnu++11 -Wall -Werror -pedantic -c dedup.cpp

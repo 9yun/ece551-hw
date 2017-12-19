@@ -1,0 +1,109 @@
+#include<cstdlib>
+#include<stdexcept>
+
+template<typename K, typename V>
+class Bstmap{
+ private:
+  class Node{
+  private:
+    Node *left;
+    Node *right;
+    K key;
+    V value;
+  public:
+  Node():left(NULL),right(NULL){}
+  Node(Node &rhs):left(rhs.left),right(rhs.right),key(rhs.key),value(rhs.value){}
+  };
+  Node *root;
+ public:
+  Node **lookup_help(const K& key) const{
+    Node **curr = &root;
+    while(*curr != NULL){
+      if(key == (*curr)->key){
+	return curr; 
+      }
+      else if(key < (*curr)->key){
+	curr = &(*curr)->left;
+      }
+      else{
+	curr = &(*curr)->right;
+      }
+    }
+    return NULL;
+  }
+  virtual const V & lookup(const K& key)  const {
+    Node **ans = lookup_help(key);
+    if(ans == NULL){
+      throw std::invalid_argument("No key found.\n");
+    }
+    return (*ans)->value;
+  }
+  virtual void add(const K & key, const V & value){
+    Node **curr = lookup_help(key);
+    if(*curr != NULL){
+      (*curr)->value = value;
+    }
+    *curr = new Node(NULL,NULL,key,value);
+    if(root == NULL){
+      root = *curr;
+    }
+  }
+  virtual void remove(const K& key){
+    Node **ans = lookup_help(key);
+    if(*ans != NULL){
+      remove_help(ans);
+    }
+  }
+
+  void remove_help(Node **ans){
+    if((*ans)->left == NULL){
+      Node *temp = (*ans);
+      (*ans) = (*ans)->right;
+      delete temp;
+    }
+    else if((*ans)->right == NULL){
+      Node *temp = (*ans);
+      *ans = (*ans)->left;
+      delete temp;
+    }
+    else{
+      Node *temp=find_leftRightMost(ans);
+      (*ans)->key = temp->key;
+      (*ans)->value = temp->value;
+      delete temp;
+    }
+  }
+  Node *find_leftRightMost(Node **ans){
+    ans = (*ans)->left;
+    while(*ans != NULL){
+      ans = (*ans)->right;
+    }
+    return *ans;
+  }
+ Bstmap():root(NULL){}
+ Bstmap(const Bstmap &rhs){
+   constructor_help(root);  
+ }
+  Bstmap & operator = (const Bstmap &rhs){
+    Bstmap temp(rhs);
+    destructor_help(root);
+    root = NULL;
+    root = temp.root;
+    temp.root = NULL;
+  }
+  void constructor_help(Node *curr){
+    add(curr->key,curr->value);
+    constructor_help(curr->left);
+    constructor_help(curr->right);
+  }
+  ~Bstmap<K,V>(){
+    destructor_help(root);
+  }
+  destructor_help(Node *curr){
+    if(curr != NULL){
+      destructor_help(curr->left);
+      destructor_help(curr->right);
+      delete curr;
+    }
+  }
+};

@@ -1,0 +1,17 @@
+Grading at 09/24/2017:23:21:01.847341
+For commit ID 83be66c3bf33a41443b9b3d2e3aece2ecf9892ab
+Attempting to compile breaker.c 
+gcc -std=gnu99 -Wall -Werror -pedantic -c breaker.c
+gcc -o breaker breaker.o
+testcase1 passed
+#################################################
+testcase2:
+testcase2 passed
+#################################################
+testcase3:
+testcase3 passed
+#################################################
+testcase4:
+testcase4 passed
+
+Overall Grade: A

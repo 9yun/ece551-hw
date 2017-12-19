@@ -1,0 +1,97 @@
+#include<iostream>
+#include<cstdlib>
+#include<cstdio>
+#include"hashmap.h"
+#include<fstream>
+#include<iterator>
+#include<string>
+#include<vector>
+#include <experimental/filesystem>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+
+void read_file(HashMap<std::string, std::string>* m,std::string filename){
+  //std::cout << "test\n";
+  std::ifstream readFile(filename);
+  std::string content;  
+  content.assign(std::istreambuf_iterator<char>(readFile),(std::istreambuf_iterator<char>()));
+  m->add(content,filename);
+}
+
+
+void traverse_file(HashMap<std::string, std::string>* m,char * path){
+  DIR *p;
+  struct dirent *ent;
+  p = opendir(path);
+  char childpath[512];
+  if(p != NULL){
+    //std::cout << "test\n";
+    while((ent = readdir(p))!=NULL){
+      if(ent->d_type & DT_DIR){
+	sprintf(childpath,"%s%s",path,ent->d_name);
+	traverse_file(m,childpath);
+      }
+      else{
+	//std::cout << "test\n";
+	std::string filename(ent->d_name); 
+	read_file(m,ent->d_name);
+      }
+    }
+  }
+  closedir(p);
+  //std::cout << "test\n";
+}
+  /* namespace fs = std::experimental::filesystem;
+  if(fs::exists(path)){
+    std::vector<std::string > filename;
+    fs::directory_iterator it(path), end;
+    for(;it!=end;++it){
+      if(fs::is_directory(it->path())){
+	traverse_file(m,it->path());
+      }
+      if(fs::is_regular_file(*it)){
+	filename.push_back(it->path().string());
+      }
+    }
+    for(std::vector<std::string>::iterator it = filename.begin();it!=filename.end();++it){
+      read_file(m,*it);
+    }
+  }*/
+  /*
+  std::vector<std::string> filenames;
+  WIN32 _FIND_DATA info;
+  std::string curr = path + "*.*";
+  HANDLE ha = FindFirstFile(curr.c_str(),&info);
+  if(ha != INVALID_HANDLE_VALUE){
+    do{   
+      if(info.attrib == _A_SUBDIR){
+	tranverse_file(m,path);
+      }
+      if(info.attrib == _A_NORMAL){
+	std::string temp(info.name);
+	filnames.push_back(temp);
+      }
+    }while(!FindNextFile(handle,&info));
+  }
+  _findclose(handle);
+  */
+  
+
+
+
+int main(int argc, char **argv){
+  if(argc < 1){
+    std::cout << "no input.\n";
+  }
+  //std::string t("test\n");
+  std::cout << "#!/bin/bash\n";
+  for(int i=1;i<argc;i++){
+    HashMap <std::string, std::string > m;
+    //std::cout << t;
+    traverse_file(&m,argv[i]);
+  }
+  return EXIT_SUCCESS;
+}
